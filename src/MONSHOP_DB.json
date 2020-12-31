@@ -1,0 +1,97 @@
+{
+    "monshop" : {
+        "main_categories" : [
+            {
+                "name" : "clothes",
+                "img" : "img_url",
+                "categories" : [
+                    {
+                        "name" : "man",
+                        "sub_categories" : [
+                            {
+                                "name" : "shirt"
+                            },
+                            {
+                                "name" : "pants"
+                            }
+                        ]
+                    },
+                    {
+                        "name" : "woman",
+                        "sub_categories" : [
+                            {
+                                "name" : "shirt"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name" : "tech",
+                "img" : "img_url",
+                "categories" : [
+                    {
+                        "name" : "computer",
+                        "sub_categories" : [
+                            {
+                                "name" : "laptop"
+                            },
+                            {
+                                "name" : "pc"
+                            }
+                        ]
+                    },
+                    {
+                        "name" : "electronic",
+                        "sub_categories" : [
+                            {
+                                "name" : "washer"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "products" : {
+            "clothes" : [
+                {
+                    "product_code" : "100-1",
+                    "categories" : [
+                        "man", "shirt"
+                    ],
+                    "type" : "shirt",
+                    "name" : "007",
+                    "brand" : "93//KIDULT",
+                    "price" : 100000,
+                    "total_price" : 75000,
+                    "size" : ["s","m","l","xl"],
+                    "size-quantity" : {
+                        "s" : 1,
+                        "m" : 3,
+                        "l" : 2
+                    },
+                    "isSpecial" : true
+                }
+            ],
+            "tech" : [
+                {
+                    "product_code" : "t100",
+                    "categories" : [
+                        "computer", "laptop"
+                    ],
+                    "type" : "laptop",
+                    "name" : "Dell inspiron 9703",
+                    "brand" : "DEll",
+                    "price" : 20000000,
+                    "total_price" : 1750000,
+                    "size" : ["14 in","15.6 in"],
+                    "size-quantity" : {
+                        "14 in" : 1,
+                        "15.6 in" : 3
+                    },
+                    "isSpecial" : true
+                }
+            ]
+        }
+    }
+}
