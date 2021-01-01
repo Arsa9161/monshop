@@ -1,6 +1,6 @@
 import React from 'react'
-import {ReactComponent as CloseIcon} from "../assets/images/X.svg"
-import {ReactComponent as MenuIcon} from "../assets/images/menu (1).svg"
+import {ReactComponent as CloseIcon} from "../../assets/images/X.svg"
+import {ReactComponent as MenuIcon} from "../../assets/images/menu (1).svg"
 
 const Close = (props) => {
     return (          
