@@ -1,0 +1,21 @@
+.InsertForm div {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.InsertForm label {
+  margin-right: 10px;
+  color: rgb(114, 114, 114);
+}
+.InsertForm span {
+  margin-bottom: 30px;
+}
+.InsertForm input,
+select {
+  width: 150px;
+  border: 1px solid #ccc;
+  font-weight: 600;
+}
+.InsertForm [type="file"] {
+  width: 300px;
+}
