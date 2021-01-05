@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import css from "./style.module.css"
-import firebase from "./firebase"
+import firebase from "../../firebase"
 
 const initProgress = {large:0,medium:0,small:0}
-const initURL = 
-const Insert = ({images}) => {
+const initURL = {large_url : "", medium_url : "", small_url : ""}
+
+const Insert = ({images, checkExist}) => {
     const initState = {
         code : "c-",
-        large : images[1],
-        medium : images[0],
+        large : images[0],
+        medium : images[1],
         small : images[2],
         type : "shirt",
         gender : "man",
@@ -16,10 +17,10 @@ const Insert = ({images}) => {
         brand : "93//KIDULT",
         price : 99999,
         total_price : 79999,
-        s : "2",
-        m : "3",
-        l : "5",
-        xl :"1",
+        s : Math.floor(Math.random() * 5),
+        m : Math.floor(Math.random() * 5),
+        l : Math.floor(Math.random() * 5),
+        xl :Math.floor(Math.random() * 5),
         isSpecial : false
     }
 
@@ -27,17 +28,33 @@ const Insert = ({images}) => {
     const [inserting, setInserting] = useState(false)
     const [finished, setFinished] = useState(false);
     const [error, setError] = useState(null)
-    const [URL, setURL] = useState(initURL)
-    const [progress, setProgress] = useState(initProgress)
+    let [URL, setURL] = useState(initURL)
+    let [progress, setProgress] = useState(initProgress)
+    let [isExist, setIsExist] = useState(null)
+    let [imgCount, setImgCount] = useState(0)
 
     useEffect(() => {
-        console.log("effect",URL)
+        console.log("effect URL " + isExist)
         if(URL.large_url != "" && URL.medium_url != "" && URL.small_url != ""){
-            console.log("db ruu hadgalj ehellee ");
-            saveToDataBase();
+            // console.log("db ruu hadgalj ehellee ");
+            // console.log("isExist ni ==> " + isExist);
+            if(isExist) {
+                updateDataBase();
+            } else {
+                saveToDataBase();
+            }
         }
     }, [URL]);
 
+    useEffect(() => {
+        console.log(isExist);
+        if(isExist != null) {
+            const storageRef = firebase.storage().ref();
+            const imagesRef = storageRef.child("images");
+            const productRef = imagesRef.child(state.code);
+            startUpload(productRef)
+        }
+    }, [isExist])
     const handleInput  = e => {
         if(e.target.type == 'file')
         setState({...state, [e.target.name] : e.target.files[0]})
@@ -49,66 +66,88 @@ const Insert = ({images}) => {
         const img = require("../../assets/Brands/93kidult/" + file.name).default
         return img;
     }
-    const handleSubmit = e => {
-        e.preventDefault();
-        setInserting(true)
-        // console.log("========> " , state);
-        const storageRef = firebase.storage().ref();
-        const imagesRef = storageRef.child("images");
-        const productRef = imagesRef.child(state.code);
 
-        let uploadTask_large = productRef.child(state.code + "_large").put(state.large);
+    const upload = (productRef, size) => {
+        let path = `${size}/${state.code}_${size}`
 
-        uploadTask_large.on("state_changed", (snapshot) => {
+        console.log('upload hiihed isexist ni : ' + isExist);
+
+        if(isExist) {
+            path += '-' + imgCount
+            // console.log('pathaa urchilluu ' + path);
+        }
+        let uploadTask = productRef.child(path).put(state[size]);
+        
+        uploadTask.on("state_changed", (snapshot) => {
             // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
             var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setProgress({...progress, large : progress})
+            setProgress({...progress, [size] : progress})
           }, (error) => {
             setError(error);
         }, function() {
           // Upload completed successfully, now we can get the download URL
-          uploadTask_large.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-            setURL(prevUrl =>  ({...prevUrl, large_url : downloadURL}));
-          })
-        });
-        
-        let uploadTask_medium = productRef.child(state.code + "_medium").put(state.medium);
-        
-        uploadTask_medium.on("state_changed", (snapshot) => {
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setProgress({...progress, medium : progress})
-          }, (error) => {
-            setError(error);
-        }, function() {
-          // Upload completed successfully, now we can get the download URL
-          uploadTask_medium.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-            setURL(prevUrl =>  ({...prevUrl, medium_url : downloadURL}));
-          })
-        });
-
-        let uploadTask_small = productRef.child(state.code + "_small").put(state.small);
-        
-        uploadTask_small.on("state_changed", (snapshot) => {
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setProgress({...progress, small : progress})
-          }, (error) => {
-            setError(error);
-        }, function() {
-          // Upload completed successfully, now we can get the download URL
-          uploadTask_small.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-            setURL(prevUrl =>  ({...prevUrl, small_url : downloadURL}));
+          const url = size + "_url";
+          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            setURL(prevUrl =>  ({...prevUrl, [url] : downloadURL}));
           })
         });
     }
+
+    const startUpload = productRef => {
+        upload(productRef, "large")
+        upload(productRef, "medium")
+        upload(productRef, "small")
+    }
+
+    const handleSubmit = e => {
+        e.preventDefault();
+
+        let res = checkExist(state.code);
+        // // console.log("check hiihed ==> "  + bool);
+        setIsExist(res != -1)
+        console.log('btn darlaa . isexist ni :' + isExist);
+        setImgCount(res + 1);
+        
+        setInserting(true)
+        // // console.log("========> " , state);
+
+    }
+
+    const updateDataBase = () => {
+        // console.log("update db ajillaa");
+
+        const clothesRef = firebase.database().ref("products/clothes");
+        const product = clothesRef.orderByChild("product_code").equalTo(state.code)
+ 
+        product.once("value", snap => {
+ 
+             let o = snap.val();
+             let key = Object.entries(o)[0][0];
+             // // console.log(key);
+             let img = o[key].img;
+             // // console.log(img);
+             img.large.push(URL.large_url);
+             img.medium.push(URL.medium_url);
+             img.small.push(URL.small_url);
+ 
+             clothesRef.child(key).child("img").set(img, err => err ?  console.log(err) : restart())
+        },
+        err =>  console.log(err))
+    }
+
     const saveToDataBase = () => {
+        let size_quantity = {}
+        if(state.s > 0) size_quantity.s = state.s
+        if(state.m > 0) size_quantity.m = state.m
+        if(state.l > 0) size_quantity.l = state.l
+        if(state.xl > 0) size_quantity.xl = state.xl
+        // console.log("save db ajillaa");
         const obj = {
             product_code : state.code,
             img : {
-                large : URL.large_url,
-                medium : URL.medium_url,
-                small : URL.small_url
+                large : [URL.large_url],
+                medium : [URL.medium_url],
+                small : [URL.small_url]
             },
             categories : [
                 "clothes", state.gender, state.type
@@ -120,12 +159,7 @@ const Insert = ({images}) => {
             price : state.price,
             total_price : state.total_price,
             size : ["s","m","l","xl"],
-            size_quantity : {
-                s : state.s,
-                m : state.m,
-                l : state.l,
-                xl : state.xl
-            },
+            size_quantity,
             isSpecial : state.isSpecial
         }
     
@@ -133,12 +167,18 @@ const Insert = ({images}) => {
             if(err)
             setError(err)
             else  {
-                setInserting(false)
-                setFinished(true)
-                URL = initURL;
-                progress = initProgress
+                restart();
             }
         })
+    }
+    const restart = () => {
+   
+        setInserting(false)
+        setFinished(true)
+        setURL(initURL);
+        setProgress(initProgress) 
+        setIsExist(null)
+        setImgCount(0)
     }
     return (
             <div className={`w-screen p-10 ${inserting ? "bg-green-100" : "bg-gray-100"} ${finished && "bg-blue-200"}`}>
