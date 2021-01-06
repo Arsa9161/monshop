@@ -10,10 +10,10 @@ const Aside = () => {
     }
     return (
         <div className="w-full h-full pb-10 ">
-            <div className="h-3/4 overflow-y-scroll overflow-x-hidden pl-4 ">
+            <div className="h-3/4 overflow-y-scroll overflow-x-hidden pl-4 pb-10">
                 <SideMenu />
             </div>
-            <div className="flex items-center space-x-12 ">
+            <div className="flex items-center justify-around px-5">
                 <SwitchButton onClick={toggleTheme}/>
                 <Back />
             </div>

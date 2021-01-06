@@ -4,9 +4,9 @@
             {
                 "name" : "clothes",
                 "img" : {
-                    "large" : "",
-                    "medium" : "",
-                    "small" : ""
+                    "large" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Fclothes%2F96162881_561050151480365_2590007452054704775_n.jpg?alt=media&token=5324145f-0ac9-4d95-a4eb-0e3b9aa56114",
+                    "medium" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Fclothes%2F96162881_561050151480365_2590007452054704775_n-medium.jpg?alt=media&token=ffe1ca97-d6d5-4ecc-825e-4daf4f090427",
+                    "small" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Fclothes%2F96162881_561050151480365_2590007452054704775_n-small.jpg?alt=media&token=e9637070-ef03-4b02-a709-a2456c1f0b72"
                 },
                 "categories" : [
                     {
@@ -17,6 +17,12 @@
                             },
                             {
                                 "name" : "pants"
+                            },
+                            {
+                              "name" : "jacket"
+                            },
+                            {
+                              "name" : "t-shirt"
                             }
                         ]
                     },
@@ -25,6 +31,15 @@
                         "sub_categories" : [
                             {
                                 "name" : "shirt"
+                            },
+                            {
+                                "name" : "pants"
+                            },
+                            {
+                              "name" : "jacket"
+                            },
+                            {
+                              "name" : "t-shirt"
                             }
                         ]
                     }
@@ -33,9 +48,9 @@
             {
                 "name" : "tech",
                 "img" : {
-                    "large" : "",
-                    "medium" : "",
-                    "small" : ""
+                    "large" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Ftech%2Ftech.jpg?alt=media&token=3257a2a4-7511-49c9-b9c6-7e8be6fcc80f",
+                    "medium" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Ftech%2Ftech-medium.jpg?alt=media&token=0d60cc39-be3d-4f32-9ae7-9b2447f3edf7",
+                    "small" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Ftech%2Ftech-small.jpg?alt=media&token=6cc265ae-c848-4614-aa52-93b84797d539"
                 },
                 "categories" : [
                     {
@@ -50,6 +65,21 @@
                         ]
                     },
                     {
+                      "name" : "phone",
+                      "sub_categories" : [
+                          {
+                              "name" : "iphone"
+                          }
+                      ]
+                    },                    {
+                      "name" : "headphone",
+                      "sub_categories" : [
+                          {
+                              "name" : "JBL"
+                          }
+                      ]
+                    },
+                    {
                         "name" : "electronic",
                         "sub_categories" : [
                             {
@@ -58,7 +88,106 @@
                         ]
                     }
                 ]
-            }
+            },
+            {
+              "name" : "home",
+              "img" : {
+                  "large" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Fhome%2Fhome.jpg?alt=media&token=c83a8280-e2dd-4886-8cb8-fd318b97e99f",
+                  "medium" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Fhome%2Fhome-medium.jpg?alt=media&token=16afe0f6-0c47-442a-8463-f91c50678792",
+                  "small" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Fhome%2Fhome-small.jpg?alt=media&token=eb137d08-049d-4239-8d39-708db237a4fd"
+              },
+              "categories" : [
+                  {
+                      "name" : "furniture",
+                      "sub_categories" : [
+
+                      ]
+                  },
+                  {
+                    "name" : "clean",
+                    "sub_categories" : [
+
+                    ]
+                  },                    {
+                    "name" : "kitchen",
+                    "sub_categories" : [
+
+                    ]
+                  },
+                  {
+                      "name" : "guest_room",
+                      "sub_categories" : [
+
+                      ]
+                  }
+              ]
+          },
+          {
+            "name" : "beauty",
+            "img" : {
+                "large" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Fbeauty%2Fbeauty.jpg?alt=media&token=fdb7756d-e57f-4903-9efb-1184f04c14fa",
+                "medium" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Fbeauty%2Fbeauty-medium.jpg?alt=media&token=f623f346-f65f-4e98-9943-2ab1eceab76d",
+                "small" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Fbeauty%2Fbeauty-small.jpg?alt=media&token=af1a4146-3864-48b1-a9da-dc3354c81ddb"
+            },
+            "categories" : [
+                {
+                    "name" : "makeup",
+                    "sub_categories" : [
+ 
+                    ]
+                },
+                {
+                  "name" : "skin",
+                  "sub_categories" : [
+
+                  ]
+                },                    {
+                  "name" : "hair",
+                  "sub_categories" : [
+
+                  ]
+                },
+                {
+                    "name" : "perfume",
+                    "sub_categories" : [
+
+                    ]
+                }
+            ]
+        },
+        {
+          "name" : "sport",
+          "img" : {
+              "large" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Fsport%2Fsport.jpg?alt=media&token=e4d04eed-de49-4506-b3e5-ab63c6c4f6c7",
+              "medium" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Fsport%2Fsport-medium.jpg?alt=media&token=90c922c1-073c-44bb-8c38-eb2eaecdd17a",
+              "small" : "https://firebasestorage.googleapis.com/v0/b/monshop-e2760.appspot.com/o/categories%2Fsport%2Fsport-small.jpg?alt=media&token=dba7ecb4-193d-4264-9f07-a0d4eab93d46"
+          },
+          "categories" : [
+              {
+                  "name" : "basketball",
+                  "sub_categories" : [
+
+                  ]
+              },
+              {
+                "name" : "football",
+                "sub_categories" : [
+
+                ]
+              },                    {
+                "name" : "swim",
+                "sub_categories" : [
+
+                ]
+              },
+              {
+                  "name" : "bicycle",
+                  "sub_categories" : [
+
+                  ]
+              }
+          ]
+      }
         ],
         "products" : {
             "clothes" : {

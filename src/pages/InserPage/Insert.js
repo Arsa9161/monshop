@@ -2,7 +2,10 @@ import React, {useState, useEffect} from 'react'
 import css from "./style.module.css"
 import firebase from "../../firebase"
 
+// upload hiih uyd upload task iin complete huviig haruulahad hereglene
 const initProgress = {large:0,medium:0,small:0}
+
+// 3 zuragnii url uud
 const initURL = {large_url : "", medium_url : "", small_url : ""}
 
 const Insert = ({images, checkExist}) => {
@@ -30,14 +33,16 @@ const Insert = ({images, checkExist}) => {
     const [error, setError] = useState(null)
     let [URL, setURL] = useState(initURL)
     let [progress, setProgress] = useState(initProgress)
+    // ene baraa umnu hadgalagdsan eseh
     let [isExist, setIsExist] = useState(null)
+
+    // hadgalagdsan bol img object d ni bga zuragnii too. ene ni storage ruu upload hiihed ner davhtsahaas sergiilne
     let [imgCount, setImgCount] = useState(0)
 
+    // 3 URL state d bichigdsnii daraa db ruu hiine
     useEffect(() => {
-        console.log("effect URL " + isExist)
         if(URL.large_url != "" && URL.medium_url != "" && URL.small_url != ""){
-            // console.log("db ruu hadgalj ehellee ");
-            // console.log("isExist ni ==> " + isExist);
+            // db d bgaa bol update 
             if(isExist) {
                 updateDataBase();
             } else {
@@ -46,8 +51,8 @@ const Insert = ({images, checkExist}) => {
         }
     }, [URL]);
 
+    // checkExist func-r shalgaj isExist-iig uurchiluhud udaan soligdood hugatsaa zurj bsn tul effec ashiglaad isExist true or false uyd buyu !=null uyd l upload ehelne
     useEffect(() => {
-        console.log(isExist);
         if(isExist != null) {
             const storageRef = firebase.storage().ref();
             const imagesRef = storageRef.child("images");
@@ -55,6 +60,7 @@ const Insert = ({images, checkExist}) => {
             startUpload(productRef)
         }
     }, [isExist])
+
     const handleInput  = e => {
         if(e.target.type == 'file')
         setState({...state, [e.target.name] : e.target.files[0]})
@@ -62,6 +68,7 @@ const Insert = ({images, checkExist}) => {
         setState({...state, [e.target.name] : e.target.value})
     }
 
+    // default dotor ni build hiigdsnii daraah url bdg shuu!!!
     const getImage = file => {
         const img = require("../../assets/Brands/93kidult/" + file.name).default
         return img;
@@ -70,11 +77,8 @@ const Insert = ({images, checkExist}) => {
     const upload = (productRef, size) => {
         let path = `${size}/${state.code}_${size}`
 
-        console.log('upload hiihed isexist ni : ' + isExist);
-
         if(isExist) {
             path += '-' + imgCount
-            // console.log('pathaa urchilluu ' + path);
         }
         let uploadTask = productRef.child(path).put(state[size]);
         
@@ -103,18 +107,17 @@ const Insert = ({images, checkExist}) => {
         e.preventDefault();
 
         let res = checkExist(state.code);
-        // // console.log("check hiihed ==> "  + bool);
+        
+        // herev baraa exist bval img object doh zurgiin urt butsah tul !=-1 bval umnu ni hadgalagdsan bga gsn ug
         setIsExist(res != -1)
-        console.log('btn darlaa . isexist ni :' + isExist);
+     
+        // storage deh file iin ardah too ni umnuh file -iin ardah toonoos negeer ih bval cache lehgui
         setImgCount(res + 1);
         
         setInserting(true)
-        // // console.log("========> " , state);
-
     }
 
     const updateDataBase = () => {
-        // console.log("update db ajillaa");
 
         const clothesRef = firebase.database().ref("products/clothes");
         const product = clothesRef.orderByChild("product_code").equalTo(state.code)
@@ -123,9 +126,8 @@ const Insert = ({images, checkExist}) => {
  
              let o = snap.val();
              let key = Object.entries(o)[0][0];
-             // // console.log(key);
              let img = o[key].img;
-             // // console.log(img);
+  
              img.large.push(URL.large_url);
              img.medium.push(URL.medium_url);
              img.small.push(URL.small_url);
@@ -141,7 +143,7 @@ const Insert = ({images, checkExist}) => {
         if(state.m > 0) size_quantity.m = state.m
         if(state.l > 0) size_quantity.l = state.l
         if(state.xl > 0) size_quantity.xl = state.xl
-        // console.log("save db ajillaa");
+
         const obj = {
             product_code : state.code,
             img : {
@@ -172,7 +174,7 @@ const Insert = ({images, checkExist}) => {
         })
     }
     const restart = () => {
-   
+
         setInserting(false)
         setFinished(true)
         setURL(initURL);
@@ -180,6 +182,7 @@ const Insert = ({images, checkExist}) => {
         setIsExist(null)
         setImgCount(0)
     }
+
     return (
             <div className={`w-screen p-10 ${inserting ? "bg-green-100" : "bg-gray-100"} ${finished && "bg-blue-200"}`}>
             <form onSubmit={handleSubmit} className={css.InsertForm + " flex flex-row justify-between items-center"}>
@@ -190,16 +193,13 @@ const Insert = ({images, checkExist}) => {
                                 <label htmlFor="large">large {state.large.name.slice(state.large.name.length - 10)}</label>
                                 {inserting && <progress value={progress.large} max="100"/>}
                             </div>
-                            {/* <input ref={large} onChange={handleInput} type="file" name="large" id="large" value={changeFileName("large", images[0])} /> */}
                             <img src={getImage(state.large)} alt="" className="w-24"/>
-                            
                         </div>
                         <div>
                             <div className="flex flex-col mr-5">
                                 <label htmlFor="medium">medium {state.medium.name.slice(state.medium.name.length - 10)}</label>
                                 {inserting && <progress value={progress.medium} max="100" />}
                             </div>
-                            {/* <input onChange={handleInput} type="file" name="medium" id="medium" /> */}
                             <img src={getImage(state.medium)} alt="" className="w-24"/>
                             
                         </div>
@@ -208,7 +208,6 @@ const Insert = ({images, checkExist}) => {
                                 <label htmlFor="small">small {state.small.name.slice(state.small.name.length - 10)}</label>
                                 {inserting && <progress value={progress.small} max="100" />}
                             </div>
-                            {/* <input onChange={handleInput} type="file" name="small" id="small" />     */}
                             <img src={getImage(state.small)} alt="" className="w-24"/>
                         </div>
                     </span>

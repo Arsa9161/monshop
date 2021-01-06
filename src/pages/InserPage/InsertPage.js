@@ -3,21 +3,29 @@ import Insert from './Insert'
 import firebase from "../../firebase"
 
 const InsertPage = () => {
+    // oruulsan olon zuragnuudiig hadgalna
     const [images, setImages] = React.useState([]) 
+
+    // hadgalsan baraanuudiin code iig db ees unshij hadgalna. ene ni shine baraa nemehed hereglegdene
     let [savedProducts, setSavedProducts] = React.useState([])
+
+    // hadgalsan baraanii zuragnii toog uund ijil index tei hadgalna. ene ni storage deer zurag oruulahad ner davhtsahaas sergiilehed hereglegdene
     let [imgCounts, setImgCounts] = React.useState([]);
+
+    // hold array
     let insert_images = [];
 
     React.useEffect(() => {
         const clothesRef = firebase.database().ref("products/clothes")
 
+        // child added uyd 2 array g nemegduulne
         clothesRef.on("child_added", snap => {
             let data = snap.val();
 
             setSavedProducts(prev => [...prev, data.product_code])
             setImgCounts(prev => [...prev, data.img.large.length])
-            console.log(savedProducts,imgCounts);
         })
+        // herev zurag nemegdvel array dah zurgiin toog dahin uurchilnu. ene ni storage d upload hiihed heregtei
         clothesRef.on("child_changed", snap => {
             let data = snap.val();
 
@@ -30,7 +38,6 @@ const InsertPage = () => {
             })
             setSavedProducts(prev => [...prev, data.product_code])
             setImgCounts(prev => [...prev, data.img.large.length])
-            console.log(savedProducts,imgCounts);
         })
     }, [])
 
@@ -39,32 +46,21 @@ const InsertPage = () => {
         setImages(Array.from(e.target.files))
     }
 
+    // nemegdeh gej bui baraanii code iig hadgalagdsan baraanuudtai jishine. Herev umnu ni tuhain baraag hadgalsan bval img object-oos ni hadgalsan zuragnii toog ni butsaana. ene ni db save hiih esvel update hiihiig shiidehed tuslana
     const checkExist = code => {
         let res = -1;
 
-        console.log("gol ezen ================== ");
-        console.log(savedProducts);
         savedProducts.forEach( (el,i) => {
             if(el == code) {
-                console.log("yes " + el + ' too ni ' + imgCounts[i]);
                 res =  imgCounts[i];
             }
         })
-        console.log('check dotor zurgiin too ni : ' + res);
         return res
     }
 
-    const saveCode = code => {
-        savedProducts.push(code);
-    }
-    // const getImage = (path) => {
-    //     const images = require.context('../../assets/Brands/93kidult', true);
-    //     let img = images('./' + 'shar.jpg');
-    //     return img
-    // }
-
     return (
-        // <Insert />   
+        // <Insert />  
+        // oruulsan zuragnuudiig 3 3 aar ni component bolgono 
         <div className="p-10 w-screen flex flex-col space-y-5 m-auto">
 
             {images.length == 0 && 
