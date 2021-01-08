@@ -1,13 +1,17 @@
-import React, {useState} from 'react'
-import { NavLink, useHistory } from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
+import { NavLink } from 'react-router-dom'
 
 const SideMenuItem = (props) => {
 
-    console.log(useHistory().location.pathname);
+    // console.log(props.name + " ==> " + props.activeLink);
     const [isShow, setIsShow] = useState(false)
-    const history = useHistory();
+    
 
-    const toggleShow = (e) => {
+    const handleClick = e => {
+        toggleShow()
+    }
+
+    const toggleShow = () => {
         setIsShow(prev => !prev)
     }
 
@@ -15,18 +19,20 @@ const SideMenuItem = (props) => {
 
     return (
         <div>
+           
             <NavLink to={props.befpath + "/" + props.name} activeClassName="text-p-pink dark:text-p-lightActive" 
-             onClick={toggleShow} className={`flex items-center link-item capitalize`}>
+             onClick={handleClick} className={`flex items-center link-item capitalize mb-2`}>
 
-                <i className={`w-3 h-3 mr-3 ${isShow && 'transform rotate-90'}`}>{svg}</i>
+                <i className={`w-2.5 h-2.5 mr-3 ${isShow && 'transform rotate-90'}`}>{svg}</i>
                 {props.category_names[props.name]}
 
             </NavLink>
             
             {isShow && props.sub_categories &&
                 <div className="flex flex-col relative left-5">
-                    {props.sub_categories.map(el => <SideMenuItem to={props.befpath + "/" + props.name + "/" + el.name} name={el.name} sub_categories={el.sub_categories}
-                    category_names={props.category_names}/>)}
+                    {props.sub_categories.map(el => <SideMenuItem befpath={props.befpath + "/" + props.name} name={el.name} sub_categories={el.sub_categories}
+                    category_names={props.category_names}
+                   />)}
                 </div>
             }
         </div>

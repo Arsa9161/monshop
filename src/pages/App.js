@@ -10,7 +10,7 @@ function App() {
 
   return (
     // <InsertPage />
-    <div className="w-screen h-screen bg-lightBody px-20 py-5 dark:bg-darkBody">
+    <div className="w-screen h-screen bg-lightBody px-20 py-5 dark:bg-darkBody select-none">
 
         <Logo />
         <Toolbar />
@@ -19,8 +19,8 @@ function App() {
           <div className="w-full h-full">
             <ProductStore>
               <Switch>
-                <Route path="/:category" component={MainPage}/>
-                <Route exact path="/" component={MainPage}/>
+                {/* <Route path="/:category" component={MainPage}/> */}
+                <Route path="/" component={MainPage}/>
               </Switch>
             </ProductStore>
           </div>

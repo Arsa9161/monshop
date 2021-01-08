@@ -11,6 +11,9 @@
   .link-item {
     @apply flex items-center uppercase text-p-gray hover:text-p-pink dark:text-p-light dark:hover:text-p-lightActive;
   }
+  .main-text {
+    @apply text-p-gray dark:text-p-light;
+  }
   .bg {
     @apply bg-white dark:bg-dark;
   }

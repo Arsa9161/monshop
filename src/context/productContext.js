@@ -37,6 +37,8 @@ const ProductContext = React.createContext();
 
 export const ProductStore = (props) => {
     const [categories, setCategories] = useState([])
+    const [newProducts, setNewProducts] = useState([])
+    const [specialProducts, setSpecialProducts] = useState([])
 
     const loadCategories = () => {
 
@@ -47,11 +49,44 @@ export const ProductStore = (props) => {
             setCategories(snap.val())
         })
     }
+    const loadProductsByKey = (category, key) => {
 
+        const rootRef = firebase.database().ref()
+        const categoryRef = rootRef.child("products/" + category);
+
+        switch(key){
+            case 'NEW_PRODUCTS' :
+                const query_new = categoryRef.limitToLast(10)
+                query_new.once("value", snap => {
+                    let objects = snap.val();
+                    let data = []
+                    let keys = Object.keys(objects) 
+                    keys.forEach(key => data.push(objects[key]))
+                    console.log(data);
+                    setNewProducts(data)
+                })
+            case 'SPECIAL_PRODUCTS' :
+                const query_special = categoryRef.orderByChild('isSpecial').equalTo('true').limitToLast(10)
+                query_special.once("value", snap => {
+                    let objects = snap.val();
+                    let data = []
+                    let keys = Object.keys(objects) 
+                    keys.forEach(key => data.push(objects[key]))
+                    console.log(data);
+                    setSpecialProducts(data)
+                })
+        }
+
+
+
+    }
     return (
         <ProductContext.Provider value = {{
             categories,
+            newProducts,
+            specialProducts,
             loadCategories,
+            loadProductsByKey,
             CATEGORY_NAMES
         }}>
             {props.children}

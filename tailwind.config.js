@@ -9,6 +9,10 @@ module.exports = {
     extend: {
       textOpacity: ['dark'],
       opacity: ['active'],
+      scale: ['group-hover'],
+      backgroundImage: ['hover', 'focus'],
+      backgroundSize: ['responsive', 'hover', 'focus'],
+      textColor : ['group-hover']
     }
   },
   theme: {
