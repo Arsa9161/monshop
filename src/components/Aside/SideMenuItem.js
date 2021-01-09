@@ -30,7 +30,7 @@ const SideMenuItem = (props) => {
             
             {isShow && props.sub_categories &&
                 <div className="flex flex-col relative left-5">
-                    {props.sub_categories.map(el => <SideMenuItem befpath={props.befpath + "/" + props.name} name={el.name} sub_categories={el.sub_categories}
+                    {props.sub_categories.map((el, i) => <SideMenuItem key={i} befpath={props.befpath + "/" + props.name} name={el.name} sub_categories={el.sub_categories}
                     category_names={props.category_names}
                    />)}
                 </div>
