@@ -31,8 +31,8 @@ const MainPage = (props) => {
 
   let lastTop = 0;
   const handleScroll = (top) => {
-    console.log("handle scroll");
-    console.log(lastTop);
+    // console.log("handle scroll");
+    // console.log(lastTop);
     if (top > lastTop) props.setScrollDirection("down");
     else props.setScrollDirection("up");
 
@@ -68,10 +68,13 @@ const MainPage = (props) => {
                   />
                 </>
               ) : (
-                <p>
-                  Уучлаарай, таны сонгосон төрөл одоогоор хоосон байна. Удахгүй
-                  дүүрэн бараатай болно гэж найдаж байна.
-                </p>
+                productCtx.specialProducts[0] == "null" &&
+                productCtx.newProducts[0] == "null" && (
+                  <p>
+                    Уучлаарай, таны сонгосон төрөл одоогоор хоосон байна.
+                    Удахгүй дүүрэн бараатай болно гэж найдаж байна.
+                  </p>
+                )
               )}
             </Route>
             <Route exact path="/">

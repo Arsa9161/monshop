@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import firebase from "../firebase";
 
 const CATEGORY_NAMES = {
@@ -40,16 +40,54 @@ export const ProductStore = (props) => {
   const [newProducts, setNewProducts] = useState([]);
   const [specialProducts, setSpecialProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [productDetail, setProductDetail] = useState({
+    mainProduct: {},
+    sameProducts: [],
+  });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (loading) {
       if (newProducts.length > 0 && specialProducts.length > 0) {
-        setTimeout(() => {
-          setLoading(false);
-        }, 400);
+        setLoading(false);
       }
     }
   }, [newProducts, specialProducts]);
+
+  const loadProductDetail = (product_code, category) => {
+    setLoading(true);
+    const rootRef = firebase.database().ref();
+    const productRef = rootRef.child("products/" + category);
+    let arr = product_code.split("-");
+    let query;
+    if (arr.length > 2) {
+      let [first, second] = arr;
+      let code = first + "-" + second;
+      query = productRef
+        .orderByChild("product_code")
+        .startAt(code)
+        .endAt(code + "utf8ff");
+    } else
+      query = productRef.orderByChild("product_code").equalTo(product_code);
+
+    query
+      .once("value", (snap) => {
+        console.log(snap.val());
+        let data = snap.val();
+        let keys = Object.keys(data);
+        let state = {
+          mainProduct: {},
+          sameProducts: [],
+        };
+
+        keys.forEach((key) => {
+          if (data[key].product_code === product_code)
+            state.mainProduct = data[key];
+          else state.sameProducts.push(data[key]);
+        });
+        setProductDetail(state);
+      })
+      .finally(() => setLoading(false));
+  };
 
   const loadCategories = () => {
     setLoading(true);
@@ -62,6 +100,7 @@ export const ProductStore = (props) => {
       })
       .finally(() => setLoading(false));
   };
+
   const loadCategory = (category) => {
     loadProductsByKey(category, "NEW_PRODUCTS");
     loadProductsByKey(category, "SPECIAL_PRODUCTS");
@@ -114,8 +153,11 @@ export const ProductStore = (props) => {
         categories,
         newProducts,
         specialProducts,
+        productDetail,
+        loadProductDetail,
         loadCategories,
         loadCategory,
+        loadProductDetail,
         CATEGORY_NAMES,
       }}
     >

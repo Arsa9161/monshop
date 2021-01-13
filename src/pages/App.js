@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import Logo from "../components/Logo";
 import Toolbar from "../components/Toolbar/Toolbar";
+import { CartStore } from "../context/cartContext";
 import { ProductStore } from "../context/productContext";
+import CartPage from "./CartPage";
 import InsertPage from "./InserPage/InsertPage";
 import MainPage from "./MainPage";
+import ProductPage from "./ProductPage";
 
 function App() {
   const [scrollDirection, setScrollDirection] = useState("up");
@@ -16,16 +19,18 @@ function App() {
       <Toolbar scrollDirection={scrollDirection} />
 
       <div className="bg-white w-full h-full rounded-30 overflow-hidden dark:bg-dark">
-        <div className="w-full h-full">
-          <ProductStore>
+        <ProductStore>
+          <CartStore>
             <Switch>
               {/* <Route path="/:category" component={MainPage}/> */}
+              <Route path="/product/:product_code" component={ProductPage} />
+              <Route path="/cart" component={CartPage} />
               <Route path="/">
                 <MainPage setScrollDirection={setScrollDirection} />
               </Route>
             </Switch>
-          </ProductStore>
-        </div>
+          </CartStore>
+        </ProductStore>
       </div>
     </div>
   );
