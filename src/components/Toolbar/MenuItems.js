@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Love from "../General/Icons/Love";
 import MenuItem from "./MenuItem";
 
 const MenuItems = () => {
@@ -42,9 +43,13 @@ const MenuItems = () => {
           icon={bagIcon}
           size={size}
           isActive={(match, location) =>
-            !["/cart", "/wishlist", "/login", "/signup"].includes(
-              location.pathname
-            )
+            ![
+              "/cart",
+              "/user/wishlist",
+              "/user/history",
+              "/login",
+              "/signup",
+            ].includes(location.pathname)
           }
         >
           Дэлгүүр
@@ -54,6 +59,9 @@ const MenuItems = () => {
         </MenuItem>
         <MenuItem link="/login" icon={loginIcon} size={size}>
           Нэвтрэх
+        </MenuItem>
+        <MenuItem link="/user/wishlist" icon={<Love />} size={size}>
+          Хадгалсан
         </MenuItem>
       </ul>
     </nav>

@@ -4,8 +4,8 @@ const CheckBox = ({ title, checked, doUnChecked, doOnChecked }) => {
   const [isChecked, setIsChecked] = React.useState(checked);
 
   React.useEffect(() => {
-    if (checked) doOnChecked();
-  }, []);
+    if (checked && isChecked) doOnChecked();
+  });
 
   const toggleCheck = () => {
     isChecked ? doUnChecked() : doOnChecked();
@@ -14,8 +14,8 @@ const CheckBox = ({ title, checked, doUnChecked, doOnChecked }) => {
 
   return (
     <div
-      className={`transition duration-300 py-1 px-5 rounded-full shadow text-md hover:bg-violet hover:text-white ${
-        isChecked && "bg-violet text-white"
+      className={`cursor-pointer transition duration-300 py-1 px-5 rounded-full shadow text-md hover:bg-gray-100  ${
+        isChecked && "bg-violet hover:bg-violet text-white"
       }`}
       onClick={toggleCheck}
     >

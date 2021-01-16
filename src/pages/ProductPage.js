@@ -16,27 +16,35 @@ const ProductPage = ({ match, location, history }) => {
   const productCtx = useContext(ProductContext);
   const cartCtx = useContext(CartContext);
   const [currImageIndex, setCurrImageIndex] = useState(0);
+  let [checkedSizes, setCheckedSizes] = useState([]);
 
   useEffect(() => {
     setCurrImageIndex(0);
     productCtx.loadProductDetail(match.params.product_code, "clothes");
   }, [location.pathname]);
 
-  let checkedSizes = [];
   const mainProduct = productCtx.productDetail.mainProduct;
   const sameProducts = productCtx.productDetail.sameProducts;
   let mainImage = mainProduct.img && mainProduct.img.large[currImageIndex];
   let length = mainProduct.img && mainProduct.img.large.length;
+  const isExist = cartCtx.isExist(mainProduct);
 
   const addToChecked = (size) => {
     let index = checkedSizes.indexOf(size);
-    if (index == -1) checkedSizes.push(size);
+
+    if (index == -1) {
+      setCheckedSizes([...checkedSizes, size]);
+    }
   };
 
   const removeFromChecked = (size) => {
     let index = checkedSizes.indexOf(size);
 
-    if (index != -1) checkedSizes.splice(index, 1);
+    if (index != -1) {
+      let arr = [...checkedSizes];
+      arr.splice(index, 1);
+      setCheckedSizes(arr);
+    }
   };
 
   const changeImage = (index) => {
@@ -59,21 +67,32 @@ const ProductPage = ({ match, location, history }) => {
   };
 
   const buyProduct = (e) => {
-    if (!cartCtx.isExist(mainProduct)) addToCart();
-    history.push("/cart");
+    if (!isExist) addToList();
+
+    checkedSizes.length != 0 && history.push("/cart");
   };
 
-  const addToCart = () => {
-    let size = {};
-    checkedSizes.forEach((sizeName) => (size[sizeName] = 1));
-    const obj = {
-      product: mainProduct,
-      userInput: {
-        size,
-      },
-    };
-    cartCtx.addToList(obj);
+  const addToList = () => {
+    if (checkedSizes.length == 0) {
+      alert("zaaval negiig songo");
+    } else {
+      let size = {};
+      checkedSizes.forEach((sizeName) => (size[sizeName] = 1));
+      const obj = {
+        product: mainProduct,
+        userInput: {
+          size,
+          count: Object.keys(size).length,
+        },
+      };
+      cartCtx.addToList(obj);
+    }
   };
+
+  const removeFromList = () => {
+    cartCtx.removeFromList(mainProduct);
+  };
+
   return (
     <div className="pt-28 px-10 h-full flex main-text">
       {productCtx.loading ? (
@@ -133,7 +152,7 @@ const ProductPage = ({ match, location, history }) => {
               <Info title="Бренд :" desc={mainProduct.brand} />
               <div className="flex flex-col">
                 <h5 className="w-1/6 mb-3 opacity-80">Хэмжээ :</h5>
-                <div className="flex space-x-5">
+                <div className="group flex space-x-5 relative w-1/2">
                   {mainProduct.size.map((el, i) => (
                     <CheckBox
                       key={i}
@@ -143,6 +162,15 @@ const ProductPage = ({ match, location, history }) => {
                       checked={i == 0}
                     />
                   ))}
+                  {isExist && (
+                    <>
+                      <div className="absolute -left-5 top-0 w-full h-full bg-white opacity-20 z-40"></div>
+                      <div className="absolute right-0 top-1/2 p-2 pl-4 text-left rounded-lg transform translate-x-full -translate-y-1/2 text-sm bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Энэ бараа сагсанд байна. Та сагс руу орж хэмжээгээ
+                        солино уу.
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
               {sameProducts.length != 0 && (
@@ -171,9 +199,9 @@ const ProductPage = ({ match, location, history }) => {
                 </div>
                 <div className="w-2/5">
                   <Button
-                    title="Сагсанд нэм "
+                    title={!isExist ? "Сагсанд нэм" : "Сагснаас хас"}
                     type="violet"
-                    onClick={addToCart}
+                    onClick={!isExist ? addToList : removeFromList}
                   />
                 </div>
               </div>

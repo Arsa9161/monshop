@@ -9,6 +9,7 @@ const Price = (props) => {
   if (price > total_price) {
     discount = Math.round(((price - total_price) * 100) / price);
   }
+
   return (
     <div className="w-4/5 flex justify-between items-center">
       <div>
