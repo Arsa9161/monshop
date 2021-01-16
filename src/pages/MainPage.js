@@ -31,8 +31,6 @@ const MainPage = (props) => {
 
   let lastTop = 0;
   const handleScroll = (top) => {
-    // console.log("handle scroll");
-    // console.log(lastTop);
     if (top > lastTop) props.setScrollDirection("down");
     else props.setScrollDirection("up");
 

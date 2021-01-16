@@ -12,7 +12,6 @@ const MenuItem = (props) => {
         className="link-item"
       >
         <i className={props.size.width + " " + props.size.height + " mr-2"}>
-          {" "}
           {props.icon}
         </i>
 
