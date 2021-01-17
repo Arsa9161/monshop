@@ -4,6 +4,7 @@ import Aside from "../components/Aside/Aside";
 import Container from "../components/Container";
 import ProductContext from "../context/productContext";
 import Spinner from "../components/General/Spinner";
+import Loader from "../components/General/Loader";
 
 const MainPage = (props) => {
   const productCtx = useContext(ProductContext);
@@ -16,10 +17,16 @@ const MainPage = (props) => {
   }
 
   useEffect(() => {
-    if (arr && arr.length == 1) {
-      const category = arr[0];
+    if (arr) {
+      if (arr.length == 1) {
+        const main_category = arr[0];
 
-      productCtx.loadCategory(category);
+        productCtx.loadCategory(main_category);
+      } else if (arr.length == 2) {
+        productCtx.loadSubCategory(arr[0], arr[1]);
+      } else if (arr.length == 3) {
+        productCtx.loadSubCategory(arr[0], arr[1], arr[2]);
+      }
     }
   }, [path]);
 
@@ -48,19 +55,51 @@ const MainPage = (props) => {
       >
         <div className="w-full">
           <Switch>
-            <Route path="/:category">
+            <Route path="/:main_category/:category/:sub_category">
               {productCtx.loading ? (
-                <Spinner />
+                <Loader />
+              ) : productCtx.products.length > 0 ? (
+                <Container
+                  title={productCtx.products[0].type}
+                  data={productCtx.products[0].products}
+                />
+              ) : (
+                <p>Хоосон</p>
+              )}
+            </Route>
+            <Route path="/:main_category/:category/">
+              {productCtx.loading ? (
+                <Loader />
+              ) : productCtx.products.length > 0 &&
+                productCtx.products.length == 1 ? (
+                <Container
+                  title={productCtx.products[0].type}
+                  data={productCtx.products[0].products}
+                />
+              ) : (
+                productCtx.products.map((product, i) => (
+                  <Container
+                    key={i}
+                    title={product.type}
+                    data={product.products}
+                    shape="horizontal"
+                  />
+                ))
+              )}
+            </Route>
+            <Route path="/:main_category">
+              {productCtx.loading ? (
+                <Loader />
               ) : productCtx.specialProducts[0] != "null" &&
                 productCtx.newProducts[0] != "null" ? (
                 <>
                   <Container
-                    title={"Онцлох"}
+                    title="special"
                     shape={"horizontal"}
                     data={productCtx.specialProducts}
                   />
                   <Container
-                    title={"Шинэ"}
+                    title="new"
                     shape={"horizontal"}
                     data={productCtx.newProducts}
                   />
@@ -77,7 +116,7 @@ const MainPage = (props) => {
             </Route>
             <Route exact path="/">
               {productCtx.loading ? (
-                <Spinner />
+                <Loader />
               ) : (
                 <Container title={"Төрлүүд"} data={productCtx.categories} />
               )}

@@ -4,7 +4,7 @@ import Back from "../components/General/Back";
 import Button from "../components/General/Button";
 import CheckBox from "../components/General/CheckBox";
 
-import Spinner from "../components/General/Spinner";
+import LoaderProduct from "../components/General/LoaderProduct";
 import SwitchButton from "../components/General/SwitchBtn";
 import Price from "../components/Price";
 import Info from "../components/Info";
@@ -96,12 +96,12 @@ const ProductPage = ({ match, location, history }) => {
   return (
     <div className="pt-28 px-10 h-full flex main-text">
       {productCtx.loading ? (
-        <Spinner />
+        <LoaderProduct />
       ) : (
         mainProduct.product_code && (
           <>
             <div className="w-1/2 h-full flex flex-col items-center">
-              <div className="w-120 h-120 rounded-30 overflow-hidden">
+              <div className="w-120 h-120 rounded-30 overflow-hidden bg-gray-200">
                 <img src={mainImage} alt="" className="w-full h-full" />
               </div>
 

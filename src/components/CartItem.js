@@ -20,8 +20,14 @@ const CartItem = ({ data }) => {
   });
 
   let allCount = data.userInput.count;
-  //   checkedSizes.forEach((el) => (allCount += data.userInput.size[el]));
   const allPrice = allCount * data.product.total_price;
+
+  const toggleFav = () => {
+    isFav
+      ? userCtx.removeFromWishList(data.product)
+      : userCtx.addToWishList(data.product);
+    setIsFav(!isFav);
+  };
 
   const add = (size) => {
     cartCtx.addSizeCount(data.product.product_code, size);
@@ -85,10 +91,7 @@ const CartItem = ({ data }) => {
           >
             <RecycleBin />
           </div>
-          <div
-            className="w-5 h-5"
-            onClick={(e) => userCtx.addToWishList(data.product)}
-          >
+          <div className="w-5 h-5" onClick={toggleFav}>
             <Love clicked={isFav} />
           </div>
         </div>

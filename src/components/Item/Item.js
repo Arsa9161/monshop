@@ -13,7 +13,7 @@ const Item = ({ data, shape }) => {
 
   const toggleFav = (e) => {
     e.preventDefault();
-    userCtx.addToWishList(data);
+    isFav ? userCtx.removeFromWishList(data) : userCtx.addToWishList(data);
     setIsFav(!isFav);
   };
 

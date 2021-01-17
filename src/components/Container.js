@@ -1,10 +1,13 @@
 import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import ProductContext from "../context/productContext";
 import Arrow from "./General/Icons/Arrow";
 import ItemsContainer from "./Item/ItemsContainer";
 
 const Container = ({ title, data, shape }) => {
   let [point, setPoint] = React.useState(0);
-
+  const productCtx = React.useContext(ProductContext);
+  const path = useLocation().pathname;
   // React.useEffect(() => {
   //     console.log(point);
   // }, [])
@@ -20,7 +23,7 @@ const Container = ({ title, data, shape }) => {
   return (
     <div>
       <p className="mb-5 ml-6 link-item capitalize hover:text-p-gray dark:hover:text-p-light font-medium opacity-60 text-lg">
-        {title}
+        {productCtx.CATEGORY_NAMES[title]}
       </p>
       {shape != "horizontal" ? (
         <ItemsContainer data={data} />
@@ -49,9 +52,12 @@ const Container = ({ title, data, shape }) => {
           >
             <Arrow />
           </div>
-          <p className="inline-block link-item cursor-pointer absolute right-0 -bottom-2 opacity-70">
+          <Link
+            to={path + "/" + title}
+            className="inline-block link-item cursor-pointer absolute right-0 -bottom-2 opacity-70"
+          >
             Цааш үзэх...
-          </p>
+          </Link>
         </div>
       )}
     </div>
