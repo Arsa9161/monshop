@@ -31,11 +31,14 @@ const CATEGORY_NAMES = {
   bicycle: "Унадаг дугуй",
   man: "Эрэгтэй",
   woman: "Эмэгтэй",
+  special: "Онцлох",
+  new: "Шинэ",
 };
 
 const ProductContext = React.createContext();
 
 export const ProductStore = (props) => {
+  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [newProducts, setNewProducts] = useState([]);
   const [specialProducts, setSpecialProducts] = useState([]);
@@ -101,9 +104,71 @@ export const ProductStore = (props) => {
       .finally(() => setLoading(false));
   };
 
-  const loadCategory = (category) => {
-    loadProductsByKey(category, "NEW_PRODUCTS");
-    loadProductsByKey(category, "SPECIAL_PRODUCTS");
+  const loadCategory = (main_category) => {
+    loadProductsByKey(main_category, "NEW_PRODUCTS");
+    loadProductsByKey(main_category, "SPECIAL_PRODUCTS");
+  };
+
+  const loadSubCategory = (main_category, category, sub_category) => {
+    setLoading(true);
+    setProducts([]);
+    const rootRef = firebase.database().ref();
+    const categoryRef = rootRef.child("products/" + main_category);
+
+    let categories = main_category + "_" + category;
+
+    if (sub_category) {
+      loadProductsByType(categoryRef, categories, sub_category);
+    } else {
+      switch (category) {
+        case "special":
+          let special_obj = {
+            type: "special",
+            products: specialProducts,
+          };
+          setProducts([special_obj]);
+          setLoading(false);
+          break;
+        case "new":
+          let new_obj = {
+            type: "new",
+            products: newProducts,
+          };
+          setProducts([new_obj]);
+          setLoading(false);
+          break;
+        default:
+          let types = ["shirt", "t-shirt", "jacket", "pants"];
+
+          types.forEach((type) => {
+            loadProductsByType(categoryRef, categories, type);
+          });
+          break;
+      }
+    }
+  };
+
+  const loadProductsByType = (categoryRef, categories, type) => {
+    categories += "_" + type;
+    const query = categoryRef.orderByChild("categories").equalTo(categories);
+
+    query
+      .once("value", (snap) => {
+        let objects = snap.val();
+        if (objects) {
+          let data = [];
+          let keys = Object.keys(objects);
+          keys.forEach((key) => data.push(objects[key]));
+
+          let obj = {
+            type,
+            products: data,
+          };
+
+          setProducts((prevState) => [...prevState, obj]);
+        }
+      })
+      .finally(() => setLoading(false));
   };
 
   const loadProductsByKey = (category, key) => {
@@ -150,6 +215,7 @@ export const ProductStore = (props) => {
     <ProductContext.Provider
       value={{
         loading,
+        products,
         categories,
         newProducts,
         specialProducts,
@@ -158,6 +224,7 @@ export const ProductStore = (props) => {
         loadCategories,
         loadCategory,
         loadProductDetail,
+        loadSubCategory,
         CATEGORY_NAMES,
       }}
     >

@@ -25,7 +25,7 @@ function App() {
           <CartStore>
             <UserStore>
               <Switch>
-                {/* <Route path="/:category" component={MainPage}/> */}
+                <Route path="/insert" component={InsertPage} />
                 <Route path="/product/:product_code" component={ProductPage} />
                 <Route path="/cart">
                   <CartPage setScrollDirection={setScrollDirection} />
