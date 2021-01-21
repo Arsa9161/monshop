@@ -1,10 +1,36 @@
 import React, { useState, useEffect } from "react";
+import firebase from "../firebase";
 
 const UserContext = React.createContext();
 
 export const UserStore = ({ children }) => {
+  const [user, setUser] = useState({});
   const [wishList, setWishList] = useState([]);
   const [purchaseHistory, setPurchaseHistory] = useState([]);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user);
+      } else {
+        console.log("user is null");
+      }
+    });
+  }, []);
+
+  const signInAnonymously = () => {
+    firebase
+      .auth()
+      .signInAnonymously()
+      .then(() => {
+        console.log("Sign in Anonymously SUCCESS");
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log("error sign/anonym " + errorMessage);
+      });
+  };
 
   const addToPurchaseHistory = (data) => {
     setPurchaseHistory([purchaseHistory, data]);
@@ -44,6 +70,7 @@ export const UserStore = ({ children }) => {
         removeFromWishList,
         addToPurchaseHistory,
         isWish,
+        signInAnonymously,
       }}
     >
       {children}
