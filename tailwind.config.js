@@ -17,6 +17,21 @@ module.exports = {
   },
   theme: {
     extend: {
+      transitionDuration: {
+        2500: "2500ms",
+        3000: "3000ms",
+        4000: "4000ms",
+        5000: "5000ms",
+      },
+      animation: {
+        scale: "scale 0.3s ease-in-out",
+      },
+      keyframes: {
+        scale: {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.2)" },
+        },
+      },
       spacing: {
         120: "30rem",
         160: "40rem",

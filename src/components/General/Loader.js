@@ -2,9 +2,9 @@ import React from "react";
 
 const Loader = () => {
   const divs = [];
-  for (let i = 1; i < 6; i++) {
+  for (let i = 1; i <= 6; i++) {
     divs.push(
-      <div className="flex flex-col space-y-5  w-64 h-64 animate-pulse">
+      <div key={i} className="flex flex-col space-y-5  w-64 h-64 animate-pulse">
         <div className="w-full h-3/4 rounded-30 bg-gray-200"></div>
         <div className="flex items-center px-5">
           <div className="flex w-1/2 flex-col space-y-2">

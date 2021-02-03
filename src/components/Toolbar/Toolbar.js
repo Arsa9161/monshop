@@ -23,7 +23,7 @@ const Toolbar = ({ scrollDirection }) => {
   };
 
   return (
-    <div className="bg h-14 flex items-center py-4 px-4 fixed top-10 right-32 rounded-full shadow z-50">
+    <div className="bg h-14 flex items-center py-4 px-4 fixed top-10 right-32 rounded-full shadow z-30">
       <div
         className={`h-5 flex items-center ${
           show && "space-x-5"

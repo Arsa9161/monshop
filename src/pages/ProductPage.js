@@ -11,12 +11,14 @@ import Info from "../components/Info";
 import Arrow from "../components/General/Icons/Arrow";
 import CartContext from "../context/cartContext";
 import ProductContext from "../context/productContext";
+import { useUserCtx } from "../context/UserContext";
 
 const ProductPage = ({ match, location, history }) => {
   const productCtx = useContext(ProductContext);
   const cartCtx = useContext(CartContext);
   const [currImageIndex, setCurrImageIndex] = useState(0);
   let [checkedSizes, setCheckedSizes] = useState([]);
+  const { addNotification } = useUserCtx();
 
   useEffect(() => {
     setCurrImageIndex(0);
@@ -86,6 +88,7 @@ const ProductPage = ({ match, location, history }) => {
         },
       };
       cartCtx.addToList(obj);
+      addNotification("Сагсанд нэмэгдлээ");
     }
   };
 
@@ -164,7 +167,7 @@ const ProductPage = ({ match, location, history }) => {
                   ))}
                   {isExist && (
                     <>
-                      <div className="absolute -left-5 top-0 w-full h-full bg-white opacity-20 z-40"></div>
+                      <div className="absolute -left-5 top-0 w-full h-full bg-white opacity-20 z-30"></div>
                       <div className="absolute right-0 top-1/2 p-2 pl-4 text-left rounded-lg transform translate-x-full -translate-y-1/2 text-sm bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         Энэ бараа сагсанд байна. Та сагс руу орж хэмжээгээ
                         солино уу.

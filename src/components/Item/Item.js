@@ -33,7 +33,7 @@ const Item = ({ data, shape }) => {
         >
           {shape == "vertical" && data.price && (
             <div
-              className="w-5 h-5 absolute top-5 right-5 z-40 opacity-0 group-hover:opacity-100 transition duration-300"
+              className="w-8 h-8 p-2 rounded-full bg-white absolute top-4 right-4 z-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center align-middle"
               onClick={toggleFav}
             >
               <Love clicked={isFav} />

@@ -1,12 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import firebase from "../firebase";
 
 const UserContext = React.createContext();
 
+export const useUserCtx = () => {
+  return useContext(UserContext);
+};
+
 export const UserStore = ({ children }) => {
   const [user, setUser] = useState({});
+  const [show, setShow] = useState(false);
   const [wishList, setWishList] = useState([]);
   const [purchaseHistory, setPurchaseHistory] = useState([]);
+  const [notification, setNotification] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      console.log("EFF", user.uid);
+    }
+    console.log("notif");
+    console.log(notification);
+  });
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -61,11 +75,25 @@ export const UserStore = ({ children }) => {
     });
   };
 
+  const addNotification = (data) => {
+    setNotification([...notification, data]);
+  };
+  // TODO: notification-g ustgah
+  // const removeNotification = () => {
+  //   setNotification([...notification, text]);
+  // };
+
   return (
     <UserContext.Provider
       value={{
+        user,
+        show,
         wishList,
         purchaseHistory,
+        notification,
+        addNotification,
+        setUser,
+        setShow,
         addToWishList,
         removeFromWishList,
         addToPurchaseHistory,
