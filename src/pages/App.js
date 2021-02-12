@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import Login from "../components/Login";
 import Logo from "../components/Logo";
 import Toolbar from "../components/Toolbar/Toolbar";
@@ -45,7 +45,7 @@ function App() {
         <ProductStore>
           <CartStore>
             <Switch>
-              <Route path="/insert" component={InsertPage} />
+              {/* <Route path="/insert" component={InsertPage} /> */}
               <Route path="/product/:product_code" component={ProductPage} />
               <Route path="/cart">
                 <CartPage setScrollDirection={setScrollDirection} />
@@ -59,9 +59,10 @@ function App() {
                   />
                 )}
               />
-              <Route path="/">
+              <Route path="/"></Route>
+              <Redirect>
                 <MainPage setScrollDirection={setScrollDirection} />
-              </Route>
+              </Redirect>
             </Switch>
           </CartStore>
         </ProductStore>
