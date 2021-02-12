@@ -62,7 +62,6 @@ function App() {
               <Route path="/">
                 <MainPage setScrollDirection={setScrollDirection} />
               </Route>
-              <Redirect to="/" />
             </Switch>
           </CartStore>
         </ProductStore>

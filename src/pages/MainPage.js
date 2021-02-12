@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch, useLocation, useHistory } from "react-router-dom";
 import Aside from "../components/Aside/Aside";
 import Container from "../components/Container";
 import ProductContext from "../context/productContext";
@@ -9,6 +9,7 @@ import Loader from "../components/General/Loader";
 const MainPage = (props) => {
   const productCtx = useContext(ProductContext);
   const mainRef = useRef(null);
+  const history = useHistory();
 
   const path = useLocation().pathname;
   let arr;
@@ -23,7 +24,11 @@ const MainPage = (props) => {
 
         productCtx.loadCategory(main_category);
       } else if (arr.length == 2) {
-        productCtx.loadSubCategory(arr[0], arr[1]);
+        if (arr[0] == "monshop") {
+          history.replace("/");
+        } else {
+          productCtx.loadSubCategory(arr[0], arr[1]);
+        }
       } else if (arr.length == 3) {
         productCtx.loadSubCategory(arr[0], arr[1], arr[2]);
       }
